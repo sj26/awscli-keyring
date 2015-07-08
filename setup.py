@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='awscli-keyring',
-    version='0.0.2',
+    version='0.1.0',
     description='AWS command line credentials from OS X Keychain and other keyrings.',
     long_description='AWS command line credentials from OS X Keychain and other keyrings.',
     author='Samuel Cochran',
