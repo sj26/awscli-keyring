@@ -14,9 +14,10 @@ Turn it on and add some credentials:
 
 ```
 $ aws configure set plugins.keyring awscli_keyring
-$ aws keyring add KEY
+$ aws keyring add
+Key: ...
 Secret: ...
-$ aws --profile work ec2 describe-instances
+$ aws ec2 describe-instances
 { ... }
 ```
 
@@ -34,7 +35,8 @@ keyring = true
 You can also add keyring credentials for different profiles:
 
 ```
-$ aws --profile work keyring add KEY
+$ aws --profile work keyring add
+Key: ...
 Secret: ...
 $ aws --profile work ec2 describe-instances
 { ... }
