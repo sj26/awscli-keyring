@@ -1,3 +1,4 @@
+import sys
 import os
 
 from botocore.compat import OrderedDict
@@ -72,11 +73,15 @@ class ShowCommand(BasicCommand):
     EXAMPLES = "Command::\n\n    aws keyring show\n\nOutput::\n\n    AWS_ACCESS_KEY_ID=\"ABC...\"\n    AWS_SECRET_ACCESS_KEY=\"123...\""
 
     def _run_main(self, parsed_args, global_args):
-        print('AWS_ACCESS_KEY_ID="{0}"'.format(self._session._credentials.access_key))
-        print('AWS_SECRET_ACCESS_KEY="{0}"'.format(self._session._credentials.secret_key))
-        if getattr(self._session._credentials, "token", None) is not None:
-            print('AWS_SESSION_TOKEN="{0}"'.format(self._session._credentials.token))
-        return 0
+        if self._session._credentials:
+            print('AWS_ACCESS_KEY_ID="{0}"'.format(self._session._credentials.access_key))
+            print('AWS_SECRET_ACCESS_KEY="{0}"'.format(self._session._credentials.secret_key))
+            if getattr(self._session._credentials, "token", None) is not None:
+                print('AWS_SESSION_TOKEN="{0}"'.format(self._session._credentials.token))
+            return 0
+        else:
+            sys.stderr.write('There are no credentials to show.\n')
+            return 1
 
 """Keyring commands"""
 class KeyringCommand(BasicCommand):
