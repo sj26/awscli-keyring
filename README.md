@@ -15,8 +15,8 @@ Turn it on and add some credentials:
 ```
 $ aws configure set plugins.keyring awscli_keyring
 $ aws keyring add
-Key: ...
-Secret: ...
+AWS Access Key ID [None]: ...
+AWS Secret Acess Key [None]: ...
 $ aws ec2 describe-instances
 { ... }
 ```
@@ -32,12 +32,14 @@ keyring = awscli_keyring
 keyring = true
 ```
 
+If you already have credentials, it will use them as defaults, but will not remove them from your configuration. We encourage you to rotate your credentials, put the new ones in keyring and remove the old ones.
+
 You can also add keyring credentials for different profiles:
 
 ```
 $ aws --profile work keyring add
-Key: ...
-Secret: ...
+AWS Access Key ID [None]: ...
+AWS Secret Acess Key [None]: ...
 $ aws --profile work ec2 describe-instances
 { ... }
 ```
