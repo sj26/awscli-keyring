@@ -24,15 +24,28 @@ class AddCommand(BasicCommand):
     ]
 
     def _run_main(self, parsed_args, parsed_globals):
+        current_key = None
+        current_secret = None
+        masked_current_secret = None
+        if self._session._credentials:
+            current_key = self._session._credentials.access_key
+            current_secret = self._session._credentials.secret_key
+            if current_secret is not None:
+                masked_current_secret = "*" * (len(current_secret) - 4) + current_secret[-4:]
+
         key = parsed_args.key
         if key is None:
             import getpass
-            key = getpass.getpass("Key: ")
+            key = getpass.getpass("AWS Access Key ID [%s]: " % current_key)
+            if key is None or key == "":
+                key = current_key
 
         secret = parsed_args.secret
         if secret is None:
             import getpass
-            secret = getpass.getpass("Secret: ")
+            secret = getpass.getpass("AWS Secret Access Key [%s]: " % masked_current_secret)
+            if secret is None or secret == "":
+                secret = current_secret
 
         profile = self._session.profile
         if profile is None:
