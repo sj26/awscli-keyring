@@ -1,3 +1,5 @@
+from botocore.exceptions import ConfigNotFound, ProfileNotFound
+
 from . import persistence
 
 def cast_bool(value):
@@ -5,12 +7,17 @@ def cast_bool(value):
 
 def initialized(session, **kwargs):
     session.session_var_map["keyring"] = ("keyring", None, False, cast_bool)
-    if session.get_config_variable("keyring") != False:
-        if session.profile is not None:
-            profile = session.profile
-        else:
-            profile = "default"
 
-        key, secret = persistence.get_credentials(profile)
+    try:
+        if session.get_config_variable("keyring") != False:
+            if session.profile is not None:
+                profile = session.profile
+            else:
+                profile = "default"
 
-        session.set_credentials(key, secret)
+            key, secret = persistence.get_credentials(profile)
+
+            session.set_credentials(key, secret)
+
+    except (ConfigNotFound, ProfileNotFound):
+        pass
