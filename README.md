@@ -54,14 +54,14 @@ Which adds the keyring flag to the profile configuration:
 keyring = true
 ```
 
-If you need to see the credentials, or use other command line tools that require credentials in your env, use show:
+If you need to see the credentials, or use other command line tools that require credentials in your env, use show. Adding `--export` will prefix each line with `export`.
 
 ```
 $ aws keyring show
 AWS_ACCESS_KEY_ID="..."
 AWS_SECRET_ACCESS_KEY="..."
 
-$ eval "$(aws keyring show)"
+$ eval "$(aws keyring show --export)"
 
 $ env | grep AWS
 AWS_ACCESS_KEY_ID="..."
