@@ -70,14 +70,22 @@ class ShowCommand(BasicCommand):
 
     DESCRIPTION = "Show credentials for current profile like environment variables\n\nUseful for sourcing in a shell or using as a wrapper for command line programs which expect credentials in environment variables."
 
+    ARG_TABLE = [
+        {"name": "export", "action": "store_true", "help_text": "Prefix variables with \"export \""},
+    ]
+
     EXAMPLES = "Command::\n\n    aws keyring show\n\nOutput::\n\n    AWS_ACCESS_KEY_ID=\"ABC...\"\n    AWS_SECRET_ACCESS_KEY=\"123...\""
 
     def _run_main(self, parsed_args, global_args):
+        export = ""
+        if parsed_args.export:
+            export = "export "
+
         if self._session._credentials:
-            print('AWS_ACCESS_KEY_ID="{0}"'.format(self._session._credentials.access_key))
-            print('AWS_SECRET_ACCESS_KEY="{0}"'.format(self._session._credentials.secret_key))
+            print('{export}AWS_ACCESS_KEY_ID="{value}"'.format(export=export, value=self._session._credentials.access_key))
+            print('{export}AWS_SECRET_ACCESS_KEY="{value}"'.format(export=export, value=self._session._credentials.secret_key))
             if getattr(self._session._credentials, "token", None) is not None:
-                print('AWS_SESSION_TOKEN="{0}"'.format(self._session._credentials.token))
+                print('{export}AWS_SESSION_TOKEN="{value}"'.format(export=export, value=self._session._credentials.token))
             return 0
         else:
             sys.stderr.write('There are no credentials to show.\n')
