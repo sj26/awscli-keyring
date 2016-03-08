@@ -4,7 +4,10 @@ import os
 from botocore.compat import OrderedDict
 
 from awscli.customizations.commands import BasicCommand
-from awscli.customizations.configure import ConfigFileWriter
+try:
+    from awscli.customizations.configure.writer import ConfigFileWriter
+except ImportError:
+    from awscli.customizations.configure import ConfigFileWriter
 
 from . import persistence
 
